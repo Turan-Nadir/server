@@ -334,15 +334,14 @@ router.post('/unit/update', async (req, res) => {
 });
 
 router.post('/unit', async (req, res) => {
-    const { unit, day } = req.body;
-  console.log(unit, day);
-    if (!unit || !day) {
+    const { unit } = req.body;
+    if (!unit ) {
       return res.status(400).json({ message: "Missing unit or day in request" });
     }
   
     try {
       const newUnit = new Unit({
-        day: day,
+        day: unit.unit,
         words: unit.words,
         story: unit.story,
       });
@@ -354,5 +353,13 @@ router.post('/unit', async (req, res) => {
       res.status(500).json({ message: 'Error saving unit to database' });
     }
   });
+router.get('/clear', async (req,res)=>{
+    try {
+        await Unit.deleteMany();
+        res.status(200).res.send("Deleted all by your majesty ")
+    } catch (error) {
+        console.error(error);
+    }
+})
   
 module.exports = router;
